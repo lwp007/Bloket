@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="titleMargin">16dp</dimen>
     <dimen name="contentInset">0dp</dimen>
+    <dimen name="dialPadButtonHeight">64dp</dimen>
+    <dimen name="titleMargin">16dp</dimen>
+
+    <dimen name="textSizeDialerPhone">32sp</dimen>
+    <dimen name="textSizeDialerGridPrimary">24sp</dimen>
+    <dimen name="textSizeDialerGridSecondary">14sp</dimen>
+
+    <dimen name="marginEight">8dp</dimen>
+    <dimen name="marginSixteen">16dp</dimen>
 </resources>
