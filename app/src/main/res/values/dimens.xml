@@ -7,7 +7,12 @@
     <dimen name="textSizeDialerPhone">32sp</dimen>
     <dimen name="textSizeDialerGridPrimary">24sp</dimen>
     <dimen name="textSizeDialerGridSecondary">14sp</dimen>
+    <dimen name="textSizeNormal">14sp</dimen>
+    <dimen name="textSizeLarge">20sp</dimen>
 
     <dimen name="marginEight">8dp</dimen>
     <dimen name="marginSixteen">16dp</dimen>
+
+    <dimen name="rowMinHeight">48dp</dimen>
+    <dimen name="imgBorderWidth">1dp</dimen>
 </resources>

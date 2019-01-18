@@ -43,7 +43,7 @@ public class ContactsFragment extends Fragment {
         ContactsTask mAsyncTask = new ContactsTask(getContext(), new ContactsResponse() {
             @Override
             public void onTaskCompletion(ArrayList<ContactsDataPair> mContactList) {
-                ContactsAdapter mAdapter = new ContactsAdapter(mContactList);
+                ContactsAdapter mAdapter = new ContactsAdapter(getContext(), mContactList);
                 cfRecyclerView.setAdapter(mAdapter);
             }
         });

@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ContactsTask extends AsyncTask {
 
@@ -38,6 +40,14 @@ public class ContactsTask extends AsyncTask {
                         mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI))));
             }
         mCursor.close();
+
+        // Sort the list alphabetically
+        Collections.sort(mContactList, new Comparator<ContactsDataPair>() {
+            @Override
+            public int compare(ContactsDataPair mNameOne, ContactsDataPair mNameTwo) {
+                return mNameOne.getName().compareTo(mNameTwo.getName());
+            }
+        });
         return null;
     }
 

@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="@dimen/rowMinHeight"
+    android:padding="16dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/cfContactImage"
+    <RelativeLayout
         android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:contentDescription="@string/empty" />
+        android:layout_height="40dp">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/cfContactImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/empty"
+            app:civ_border_color="@color/colorImageBorder"
+            app:civ_border_width="@dimen/imgBorderWidth" />
+
+        <TextView
+            android:id="@+id/cfContactFirstLetter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSizeLarge" />
+
+    </RelativeLayout>
+
 
     <TextView
+        android:layout_width="match_parent"
         android:id="@+id/cfContactName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>
