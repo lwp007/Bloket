@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bloket.android.R;
 
@@ -136,6 +137,10 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 break;
 
             case R.id.dpKeyDial:
+                if (etPhoneNumber.getText().toString().length() < 1) {
+                    Toast.makeText(getActivity(), "Please enter a valid number", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 final String permissionToCall = Manifest.permission.CALL_PHONE;
                 Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
                 phoneCallIntent.setData(Uri.parse("tel:" + etPhoneNumber.getText().toString()));
