@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ public class ContactsFragment extends Fragment {
 
         final RecyclerView cfRecyclerView = mView.findViewById(R.id.cfRecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        cfRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         cfRecyclerView.setLayoutManager(mLayoutManager);
         cfRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ContactsTask mAsyncTask = new ContactsTask(getContext(), new ContactsResponse() {

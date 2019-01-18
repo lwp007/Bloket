@@ -14,5 +14,6 @@
     <dimen name="marginSixteen">16dp</dimen>
 
     <dimen name="rowMinHeight">48dp</dimen>
+    <dimen name="headerMinHeight">32dp</dimen>
     <dimen name="imgBorderWidth">1dp</dimen>
 </resources>

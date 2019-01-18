@@ -1,12 +1,14 @@
 package com.bloket.android.modules.mainscreen.components.contacts;
 
-public class ContactsDataPair {
+class ContactsDataPair {
 
     private String mName, mPhotoUri;
+    private int mType;
 
-    ContactsDataPair(String mName, String mPhotoUri) {
+    ContactsDataPair(String mName, String mPhotoUri, int mType) {
         this.mName = mName;
         this.mPhotoUri = mPhotoUri;
+        this.mType = mType;
     }
 
     String getName() {
@@ -17,4 +19,7 @@ public class ContactsDataPair {
         return mPhotoUri;
     }
 
+    int getType() {
+        return mType;
+    }
 }

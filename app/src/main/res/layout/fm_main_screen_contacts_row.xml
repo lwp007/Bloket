@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/rowMinHeight"
-    android:padding="16dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:minHeight="@dimen/rowMinHeight"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="40dp"
@@ -32,12 +32,13 @@
 
     </RelativeLayout>
 
-
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/cfContactName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/textSizeNormal"
         tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

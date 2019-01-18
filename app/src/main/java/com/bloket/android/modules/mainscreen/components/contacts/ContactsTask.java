@@ -37,7 +37,7 @@ public class ContactsTask extends AsyncTask {
             while (mCursor.moveToNext()) {
                 mContactList.add(new ContactsDataPair(
                         mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
-                        mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI))));
+                        mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI)), 0));
             }
         mCursor.close();
 
@@ -48,6 +48,17 @@ public class ContactsTask extends AsyncTask {
                 return mNameOne.getName().compareTo(mNameTwo.getName());
             }
         });
+
+        // Alphabetically group the list
+        char mPrev = ' ';
+        for (int mCount = 0; mCount < mContactList.size(); mCount++) {
+            ContactsDataPair mPair = mContactList.get(mCount);
+            if (mPair.getName().charAt(0) != mPrev) {
+                mContactList.add(mCount, new ContactsDataPair(mPair.getName().substring(0, 1).toUpperCase(), "", 1));
+                mPrev = mPair.getName().charAt(0);
+                mCount++;
+            }
+        }
         return null;
     }
 
