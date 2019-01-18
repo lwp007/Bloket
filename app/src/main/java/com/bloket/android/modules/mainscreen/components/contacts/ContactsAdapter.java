@@ -1,34 +1,36 @@
 package com.bloket.android.modules.mainscreen.components.contacts;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bloket.android.R;
-import com.github.lzyzsd.randomcolor.RandomColor;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
-public class ContactsAdapter extends RecyclerView.Adapter {
+public class ContactsAdapter extends RecyclerView.Adapter implements Filterable {
 
     private ArrayList<ContactsDataPair> mContactsList;
     private Context mContext;
+    private ArrayList<ContactsDataPair> mFilteredList;
 
     ContactsAdapter(Context mContext, ArrayList<ContactsDataPair> mContactsList) {
         this.mContext = mContext;
         this.mContactsList = mContactsList;
+        this.mFilteredList = mContactsList;
     }
 
     @Override
     public int getItemViewType(int mPosition) {
-        return mContactsList.get(mPosition).getType();
+        return mFilteredList.get(mPosition).getType();
     }
 
     @NonNull
@@ -47,34 +49,24 @@ public class ContactsAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder mHolder, int mPosition) {
         if (mHolder instanceof ContactsViewHolder) {
             ContactsViewHolder mContactsHolder = ((ContactsViewHolder) mHolder);
-            ContactsDataPair mDataPair = mContactsList.get(mPosition);
+            ContactsDataPair mDataPair = mFilteredList.get(mPosition);
             mContactsHolder.mContactName.setText(mDataPair.getName());
             if (mDataPair.getPhotoUri() == null) {
-                int mColor = new RandomColor().randomColor();
-                mContactsHolder.mContactImage.setImageResource(R.drawable.ic_contact_default);
-                mContactsHolder.mContactImage.setColorFilter(mColor);
-                mContactsHolder.mContactImage.setBorderWidth(0);
                 mContactsHolder.mContactFirstLetter.setVisibility(View.VISIBLE);
-                if (isColorDark(mColor))
-                    mContactsHolder.mContactFirstLetter.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
                 mContactsHolder.mContactFirstLetter.setText(mDataPair.getName().substring(0, 1));
+                mContactsHolder.mContactImage.setImageResource(R.drawable.ic_contact_default);
             } else {
-                mContactsHolder.mContactImage.setImageURI(Uri.parse(mDataPair.getPhotoUri()));
                 mContactsHolder.mContactFirstLetter.setVisibility(View.INVISIBLE);
+                mContactsHolder.mContactImage.setImageURI(Uri.parse(mDataPair.getPhotoUri()));
             }
-        } else if (mHolder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) mHolder).mHeaderText.setText(mContactsList.get(mPosition).getName());
+        } else {
+            ((HeaderViewHolder) mHolder).mHeaderText.setText(mFilteredList.get(mPosition).getName());
         }
     }
 
     @Override
     public int getItemCount() {
-        return mContactsList.size();
-    }
-
-    private boolean isColorDark(int color) {
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        return !(darkness < 0.5);
+        return mFilteredList.size();
     }
 
     class ContactsViewHolder extends RecyclerView.ViewHolder {
@@ -87,6 +79,36 @@ public class ContactsAdapter extends RecyclerView.Adapter {
             mContactFirstLetter = mView.findViewById(R.id.cfContactFirstLetter);
             mContactImage = mView.findViewById(R.id.cfContactImage);
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence mCharSequence) {
+                String mSearchText = mCharSequence.toString();
+                if (mSearchText.isEmpty()) {
+                    mFilteredList = mContactsList;
+                } else {
+                    ArrayList<ContactsDataPair> mList = new ArrayList<>();
+                    for (ContactsDataPair mPair : mContactsList) {
+                        if (mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()) /*|| mPair.getPhone().contains(mCharSequence)*/) {
+                            mList.add(mPair);
+                        }
+                    }
+                    mFilteredList = mList;
+                }
+                FilterResults mFilteredResults = new FilterResults();
+                mFilteredResults.values = mFilteredList;
+                return mFilteredResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<ContactsDataPair>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {

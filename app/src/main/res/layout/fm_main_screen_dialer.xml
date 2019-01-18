@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/marginEight"
             android:layout_marginBottom="@dimen/marginEight"
             android:layout_weight="1"
-            android:background="@drawable/bt_dialpad_call"
+            android:background="@drawable/bg_dialpad_call"
             android:clickable="true"
             android:focusable="true"
             android:text="@string/dp_txt_call"
