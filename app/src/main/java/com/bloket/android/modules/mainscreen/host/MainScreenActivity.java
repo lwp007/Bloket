@@ -1,13 +1,16 @@
 package com.bloket.android.modules.mainscreen.host;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.bloket.android.R;
@@ -16,6 +19,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
 
     private MaterialMenuDrawable mMaterialMenu;
+    private FloatingActionButton mFloatingButton;
 
     @Override
     protected void onCreate(@Nullable Bundle mSavedInstanceState) {
@@ -31,6 +35,9 @@ public class MainScreenActivity extends AppCompatActivity {
         mMaterialMenu.setTransformationDuration(350);
         if (mToolbar != null) mToolbar.setNavigationIcon(mMaterialMenu);
 
+        // Floating action button
+        mFloatingButton = findViewById(R.id.mpFabButton);
+
         // Set up viewpager
         setViewPager();
     }
@@ -41,7 +48,25 @@ public class MainScreenActivity extends AppCompatActivity {
         final ViewPager mViewPager = findViewById(R.id.mpViewPager);
         MainScreenAdapter mAdapter = new MainScreenAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int mPosition, float mPosOffset, int mPosOffsetPixels) {
+            }
 
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onPageSelected(int mPosition) {
+                if (mPosition == 1) {
+                    if (mFloatingButton != null) mFloatingButton.setVisibility(View.VISIBLE);
+                } else {
+                    if (mFloatingButton != null) mFloatingButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int mPosition) {
+            }
+        });
         // Set up tabs
         TabLayout mTabLayout = findViewById(R.id.mpTabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
