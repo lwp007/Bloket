@@ -1,10 +1,13 @@
 package com.bloket.android.modules.mainscreen.components.contacts;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,12 +41,10 @@ public class ContactsFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{permissionToCall}, 1);
         }
 
-
         final SearchView mSearchView = mView.findViewById(R.id.cfSearchView);
-        mSearchView.setQueryHint("Search contacts");
         final View mSearchBackground = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         mSearchBackground.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
-
+        mSearchView.setQueryHint("Search contacts");
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +64,18 @@ public class ContactsFragment extends Fragment {
                 return false;
             }
         });
+
+        FloatingActionButton mFloatingButton = getActivity().findViewById(R.id.mpFabButton);
+        mFloatingButton.setImageResource(R.drawable.ic_action_add);
+        mFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                Intent mIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                mIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                startActivityForResult(mIntent, 1);
+            }
+        });
+
         final RecyclerView cfRecyclerView = mView.findViewById(R.id.cfRecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         cfRecyclerView.setLayoutManager(mLayoutManager);

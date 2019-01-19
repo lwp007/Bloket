@@ -50,9 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="24dp"
-            android:src="@drawable/ic_tab_blocklogs"
             android:visibility="gone"
-            app:borderWidth="0dp"
+            app:borderWidth="2dp"
             app:layout_behavior="com.bloket.android.utilities.FABScrollingBehavior" />
 
     </android.support.design.widget.CoordinatorLayout>

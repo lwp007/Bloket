@@ -44,6 +44,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void setViewPager() {
+
         // Set up pager adapter
         final ViewPager mViewPager = findViewById(R.id.mpViewPager);
         MainScreenAdapter mAdapter = new MainScreenAdapter(getSupportFragmentManager());
@@ -67,6 +68,7 @@ public class MainScreenActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int mPosition) {
             }
         });
+
         // Set up tabs
         TabLayout mTabLayout = findViewById(R.id.mpTabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -100,6 +102,5 @@ public class MainScreenActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }
