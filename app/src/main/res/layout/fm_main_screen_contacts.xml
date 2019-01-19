@@ -22,8 +22,8 @@
             android:focusable="true"
             android:theme="@style/SearchViewStyle"
             app:iconifiedByDefault="false" />
-    </FrameLayout>
 
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cfRecyclerView"

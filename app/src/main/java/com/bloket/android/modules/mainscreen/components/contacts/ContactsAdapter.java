@@ -69,18 +69,6 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         return mFilteredList.size();
     }
 
-    class ContactsViewHolder extends RecyclerView.ViewHolder {
-        TextView mContactName, mContactFirstLetter;
-        CircularImageView mContactImage;
-
-        ContactsViewHolder(View mView) {
-            super(mView);
-            mContactName = mView.findViewById(R.id.cfContactName);
-            mContactFirstLetter = mView.findViewById(R.id.cfContactFirstLetter);
-            mContactImage = mView.findViewById(R.id.cfContactImage);
-        }
-    }
-
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -92,9 +80,8 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                 } else {
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
                     for (ContactsDataPair mPair : mContactsList) {
-                        if (mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()) /*|| mPair.getPhone().contains(mCharSequence)*/) {
+                        if (mPair.getType() == 0 && mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()))
                             mList.add(mPair);
-                        }
                     }
                     mFilteredList = mList;
                 }
@@ -103,12 +90,25 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                 return mFilteredResults;
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 mFilteredList = (ArrayList<ContactsDataPair>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
+    }
+
+    class ContactsViewHolder extends RecyclerView.ViewHolder {
+        TextView mContactName, mContactFirstLetter;
+        CircularImageView mContactImage;
+
+        ContactsViewHolder(View mView) {
+            super(mView);
+            mContactName = mView.findViewById(R.id.cfContactName);
+            mContactFirstLetter = mView.findViewById(R.id.cfContactFirstLetter);
+            mContactImage = mView.findViewById(R.id.cfContactImage);
+        }
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
