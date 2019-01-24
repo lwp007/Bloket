@@ -1,4 +1,4 @@
-package com.bloket.android.modules.mainscreen.components.contacts;
+package com.bloket.android.utilities.datautil;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -7,18 +7,20 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
+import com.bloket.android.modules.contacts.ContactsDataPair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class ContactsTask extends AsyncTask {
+public class ContactsListTask extends AsyncTask {
 
     @SuppressLint("StaticFieldLeak")
     private Context mContext;
     private ArrayList<ContactsDataPair> mContactList;
     private ContactsResponse mResponse;
 
-    ContactsTask(Context mContext, ContactsResponse mResponse) {
+    public ContactsListTask(Context mContext, ContactsResponse mResponse) {
         this.mContext = mContext;
         this.mResponse = mResponse;
     }
@@ -31,13 +33,19 @@ public class ContactsTask extends AsyncTask {
 
         // Fetch contacts
         ContentResolver mContactResolver = mContext.getContentResolver();
-        Cursor mCursor = mContactResolver.query(ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.PHOTO_THUMBNAIL_URI}, null, null, null);
+        Cursor mCursor = mContactResolver.query(ContactsContract.Contacts.CONTENT_URI, new String[]{
+                ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER}, null, null, null);
         if (mCursor == null) return null;
         if (mCursor.getCount() > 0)
             while (mCursor.moveToNext()) {
-                mContactList.add(new ContactsDataPair(
-                        mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
-                        mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI)), 0));
+                if (mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER) > 0)
+                    mContactList.add(new ContactsDataPair(
+                            mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts._ID)),
+                            mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
+                            mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI)), 0));
             }
         mCursor.close();
 
@@ -54,7 +62,7 @@ public class ContactsTask extends AsyncTask {
         for (int mCount = 0; mCount < mContactList.size(); mCount++) {
             ContactsDataPair mPair = mContactList.get(mCount);
             if (mPair.getName().charAt(0) != mPrev) {
-                mContactList.add(mCount, new ContactsDataPair(mPair.getName().substring(0, 1).toUpperCase(), "", 1));
+                mContactList.add(mCount, new ContactsDataPair("", mPair.getName().substring(0, 1).toUpperCase(), "", 1));
                 mPrev = mPair.getName().charAt(0);
                 mCount++;
             }
@@ -65,5 +73,11 @@ public class ContactsTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object mObject) {
         mResponse.onTaskCompletion(mContactList);
+    }
+
+    public interface ContactsResponse {
+
+        void onTaskCompletion(ArrayList<ContactsDataPair> mContactList);
+
     }
 }

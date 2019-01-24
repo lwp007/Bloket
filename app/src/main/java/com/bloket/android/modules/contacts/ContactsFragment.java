@@ -1,4 +1,4 @@
-package com.bloket.android.modules.mainscreen.components.contacts;
+package com.bloket.android.modules.contacts;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bloket.android.R;
+import com.bloket.android.utilities.datautil.ContactsListTask;
 
 import java.util.ArrayList;
 
@@ -80,7 +81,7 @@ public class ContactsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         cfRecyclerView.setLayoutManager(mLayoutManager);
         cfRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        ContactsTask mAsyncTask = new ContactsTask(getContext(), new ContactsResponse() {
+        ContactsListTask mAsyncTask = new ContactsListTask(getContext(), new ContactsListTask.ContactsResponse() {
             @Override
             public void onTaskCompletion(ArrayList<ContactsDataPair> mContactList) {
                 mAdapter = new ContactsAdapter(getContext(), mContactList);

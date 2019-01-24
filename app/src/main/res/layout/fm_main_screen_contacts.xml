@@ -8,10 +8,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/marginSixteen"
-        android:paddingTop="@dimen/marginSixteen"
-        android:paddingEnd="@dimen/marginSixteen"
-        android:paddingBottom="@dimen/marginEight">
+        android:paddingStart="@dimen/sizeSixteen"
+        android:paddingTop="@dimen/sizeSixteen"
+        android:paddingEnd="@dimen/sizeSixteen"
+        android:paddingBottom="@dimen/sizeEight">
 
         <android.support.v7.widget.SearchView
             android:id="@+id/cfSearchView"

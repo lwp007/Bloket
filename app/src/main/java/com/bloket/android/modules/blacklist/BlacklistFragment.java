@@ -1,4 +1,4 @@
-package com.bloket.android.modules.mainscreen.components.blacklist;
+package com.bloket.android.modules.blacklist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

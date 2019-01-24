@@ -1,4 +1,4 @@
-package com.bloket.android.modules.mainscreen.components.contacts;
+package com.bloket.android.modules.contacts;
 
 import android.content.Context;
 import android.net.Uri;
@@ -22,7 +22,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
     private Context mContext;
     private ArrayList<ContactsDataPair> mFilteredList;
 
-    ContactsAdapter(Context mContext, ArrayList<ContactsDataPair> mContactsList) {
+    public ContactsAdapter(Context mContext, ArrayList<ContactsDataPair> mContactsList) {
         this.mContext = mContext;
         this.mContactsList = mContactsList;
         this.mFilteredList = mContactsList;
@@ -77,7 +77,23 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                 String mSearchText = mCharSequence.toString();
                 if (mSearchText.isEmpty()) {
                     mFilteredList = mContactsList;
+                } else if (mSearchText.charAt(0) == '[') {
+                    // T9 Contact search
+                    ArrayList<ContactsDataPair> mList = new ArrayList<>();
+                    for (ContactsDataPair mPair : mContactsList) {
+                        if (mPair.getType() != 0) continue;
+
+                        String mNameWords[] = mPair.getName().split(" ");
+                        for (String mWords : mNameWords) {
+                            if (mWords.toLowerCase().matches(mSearchText.toLowerCase())) {
+                                mList.add(mPair);
+                                break;
+                            }
+                        }
+                    }
+                    mFilteredList = mList;
                 } else {
+                    // Normal search
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
                     for (ContactsDataPair mPair : mContactsList) {
                         if (mPair.getType() == 0 && mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()))

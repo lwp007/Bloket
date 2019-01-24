@@ -1,79 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/dpKeyCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/sizeEight"
+        android:background="@drawable/bg_dialpad_call"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/dp_txt_call"
+        android:textSize="@dimen/textSizeDialerGridSecondary" />
+
     <LinearLayout
-        android:id="@+id/drDialerAction"
+        android:id="@+id/drKeyGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorDialPad"
-        android:baselineAligned="false"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <ImageButton
-            android:id="@+id/dpKeyHide"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/empty"
-            android:focusable="true"
-            android:src="@drawable/ic_dialpad_hide" />
-
-        <Button
-            android:id="@+id/dpKeyDial"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/marginEight"
-            android:layout_marginBottom="@dimen/marginEight"
-            android:layout_weight="1"
-            android:background="@drawable/bg_dialpad_call"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/dp_txt_call"
-            android:textSize="@dimen/textSizeDialerGridSecondary" />
-
-        <ImageButton
-            android:id="@+id/dpKeyBack"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/empty"
-            android:focusable="true"
-            android:src="@drawable/ic_dialpad_back" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/drDialerGrid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/drDialerAction"
-        android:background="@color/colorDialPad"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etPhoneNumber"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="center"
-            android:inputType="phone"
-            android:padding="@dimen/marginEight"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/textSizeDialerPhone"
-            tools:ignore="Autofill,LabelFor" />
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/sizeFour"
+            android:rotation="180">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rotation="180"
+                app:cardElevation="@dimen/sizeEight">
+
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:inputType="phone"
+                    android:padding="@dimen/sizeEight"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/textSizeDialerPhone"
+                    tools:ignore="Autofill,LabelFor" />
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -375,6 +357,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -438,12 +421,53 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <ImageButton
+                android:id="@+id/dpKeyHide"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dialPadButtonHeight"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:gravity="center"
+                android:src="@drawable/ic_dialpad_hide" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dialPadButtonHeight"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/dpKeyBack"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dialPadButtonHeight"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:gravity="center"
+                android:src="@drawable/ic_dialpad_back" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/drDialerContactList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/drDialerGrid" />
+        android:layout_above="@id/drKeyGrid"
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/dialPadButtonHeight" />
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
-package com.bloket.android.modules.mainscreen.host;
+package com.bloket.android.homescreen;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -11,11 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.bloket.android.R;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity {
 
 
     private MaterialMenuDrawable mMaterialMenu;
@@ -42,16 +45,23 @@ public class MainScreenActivity extends AppCompatActivity {
         setViewPager();
     }
 
+    private static void hideSoftKeyboard(Context mContext, View mView) {
+        InputMethodManager mManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (mManager != null) mManager.hideSoftInputFromWindow(mView.getWindowToken(), 0);
+
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void setViewPager() {
 
         // Set up pager adapter
         final ViewPager mViewPager = findViewById(R.id.mpViewPager);
-        MainScreenAdapter mAdapter = new MainScreenAdapter(getSupportFragmentManager());
+        HomeScreenAdapter mAdapter = new HomeScreenAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int mPosition, float mPosOffset, int mPosOffsetPixels) {
+                hideSoftKeyboard(getApplicationContext(), mViewPager);
             }
 
             @SuppressLint("RestrictedApi")
@@ -65,7 +75,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int mPosition) {
+            public void onPageScrollStateChanged(int mState) {
             }
         });
 

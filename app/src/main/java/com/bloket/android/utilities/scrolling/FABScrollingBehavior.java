@@ -1,4 +1,4 @@
-package com.bloket.android.utilities;
+package com.bloket.android.utilities.scrolling;
 
 import android.content.Context;
 import android.content.res.TypedArray;

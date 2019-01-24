@@ -1,4 +1,4 @@
-package com.bloket.android.modules.mainscreen.components.blocklogs;
+package com.bloket.android.modules.whitelist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 
 import com.bloket.android.R;
 
-public class BlocklogsFragment extends Fragment {
+public class WhitelistFragment extends Fragment {
 
-    public static BlocklogsFragment newInstance() {
-        return new BlocklogsFragment();
+    public static WhitelistFragment newInstance() {
+        return new WhitelistFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater mInflater, @Nullable ViewGroup mContainer, @Nullable Bundle mSavedInstance) {
-        View mView = mInflater.inflate(R.layout.fm_main_screen_blocklogs, mContainer, false);
+        View mView = mInflater.inflate(R.layout.fm_main_screen_whitelist, mContainer, false);
         return mView;
     }
 }

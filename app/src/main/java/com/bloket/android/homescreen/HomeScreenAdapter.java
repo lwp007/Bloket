@@ -1,18 +1,18 @@
-package com.bloket.android.modules.mainscreen.host;
+package com.bloket.android.homescreen;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bloket.android.modules.mainscreen.components.blacklist.BlacklistFragment;
-import com.bloket.android.modules.mainscreen.components.blocklogs.BlocklogsFragment;
-import com.bloket.android.modules.mainscreen.components.contacts.ContactsFragment;
-import com.bloket.android.modules.mainscreen.components.dialer.DialerFragment;
-import com.bloket.android.modules.mainscreen.components.whitelist.WhitelistFragment;
+import com.bloket.android.modules.blacklist.BlacklistFragment;
+import com.bloket.android.modules.blocklogs.BlocklogsFragment;
+import com.bloket.android.modules.contacts.ContactsFragment;
+import com.bloket.android.modules.dialer.DialerFragment;
+import com.bloket.android.modules.whitelist.WhitelistFragment;
 
-public class MainScreenAdapter extends FragmentPagerAdapter {
+public class HomeScreenAdapter extends FragmentPagerAdapter {
 
-    MainScreenAdapter(FragmentManager mFragmentManager) {
+    HomeScreenAdapter(FragmentManager mFragmentManager) {
         super(mFragmentManager);
     }
 
