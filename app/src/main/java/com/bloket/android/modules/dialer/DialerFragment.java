@@ -3,18 +3,24 @@ package com.bloket.android.modules.dialer;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.PhoneAccountHandle;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -35,7 +41,9 @@ import com.bloket.android.modules.contacts.ContactsAdapter;
 import com.bloket.android.modules.contacts.ContactsDataPair;
 import com.bloket.android.utilities.datautil.ContactsListTask;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -241,7 +249,6 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 break;
 
         }
-
     }
 
     @Override
@@ -293,6 +300,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         }
     }
 
+    @SuppressLint("NewApi")
     private void makeCall() {
         String mInput = etPhoneNumber.getText().toString();
         if (mInput.length() < 1) {
@@ -300,14 +308,19 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
             return;
         }
 
-        final String permissionToCall = Manifest.permission.CALL_PHONE;
-        Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
-        phoneCallIntent.setData(Uri.parse("tel:" + Uri.encode(mInput)));
-        if (ActivityCompat.checkSelfPermission(getActivity(), permissionToCall) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{permissionToCall}, 1);
-            return;
+        if (isDualSim()) {
+            // Call is made on and above API 23
+            showSimSelector();
+        } else {
+            final String permissionToCall = Manifest.permission.CALL_PHONE;
+            Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
+            phoneCallIntent.setData(Uri.parse("tel:" + Uri.encode(mInput)));
+            if (ActivityCompat.checkSelfPermission(getActivity(), permissionToCall) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{permissionToCall}, 1);
+                return;
+            }
+            startActivity(phoneCallIntent);
         }
-        startActivity(phoneCallIntent);
     }
 
     private void getFilteredList() {
@@ -333,7 +346,6 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         }
 
         TelephonyManager mTelephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-
         View mContentView = LayoutInflater.from(getContext()).inflate(R.layout.dg_generic_one, null);
         final Dialog mDialog = new Dialog(getContext());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -347,6 +359,78 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         btPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
+    private boolean isDualSim() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+                return false;
+            }
+
+            final SubscriptionManager mManager = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            final List<SubscriptionInfo> mActiveSubList = mManager.getActiveSubscriptionInfoList();
+            return mActiveSubList.size() > 1;
+        } else {
+            return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("MissingPermission")
+    private void showSimSelector() {
+        final SubscriptionManager mManager = (SubscriptionManager) getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+        final List<SubscriptionInfo> mActiveSubList = mManager.getActiveSubscriptionInfoList();
+        View mContentView = LayoutInflater.from(getContext()).inflate(R.layout.fm_dialer_sim_chooser, null);
+        final Dialog mDialog = new Dialog(getContext());
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(mContentView);
+
+        TextView tvSimOne = mContentView.findViewById(R.id.tvSimOne);
+        tvSimOne.setText(mActiveSubList.get(0).getDisplayName());
+        tvSimOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                final Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Uri.encode(etPhoneNumber.getText().toString())));
+                final int simSlotIndex = 0;
+                try {
+                    final Method mSubIdMethod = SubscriptionManager.class.getDeclaredMethod("getSubId", int.class);
+                    mSubIdMethod.setAccessible(true);
+                    final long mSubIdForSlot = ((long[]) mSubIdMethod.invoke(SubscriptionManager.class, simSlotIndex))[0];
+                    final ComponentName mComponentName = new ComponentName("com.android.phone", "com.android.services.telephony.TelephonyConnectionService");
+                    final PhoneAccountHandle mAccountHandle = new PhoneAccountHandle(mComponentName, String.valueOf(mSubIdForSlot));
+                    mIntent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", mAccountHandle);
+                } catch (Exception mException) {
+                    mException.printStackTrace();
+                }
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mIntent);
+                mDialog.dismiss();
+            }
+        });
+        TextView tvSimTwo = mContentView.findViewById(R.id.tvSimTwo);
+        tvSimTwo.setText(mActiveSubList.get(1).getDisplayName());
+        tvSimTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View mView) {
+                final Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Uri.encode(etPhoneNumber.getText().toString())));
+                final int simSlotIndex = 1;
+                try {
+                    final Method mSubIdMethod = SubscriptionManager.class.getDeclaredMethod("getSubId", int.class);
+                    mSubIdMethod.setAccessible(true);
+                    final long mSubIdForSlot = ((long[]) mSubIdMethod.invoke(SubscriptionManager.class, simSlotIndex))[0];
+                    final ComponentName mComponentName = new ComponentName("com.android.phone", "com.android.services.telephony.TelephonyConnectionService");
+                    final PhoneAccountHandle mAccountHandle = new PhoneAccountHandle(mComponentName, String.valueOf(mSubIdForSlot));
+                    mIntent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", mAccountHandle);
+                } catch (Exception mException) {
+                    mException.printStackTrace();
+                }
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mIntent);
                 mDialog.dismiss();
             }
         });

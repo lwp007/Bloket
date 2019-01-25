@@ -23,6 +23,7 @@
         <item name="actionModeBackground">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="listSelector">?android:attr/selectableItemBackground</item>
 
         <!-- Background -->
         <item name="dialogBackground">@drawable/bg_dialog_light</item>

@@ -31,4 +31,6 @@
     <string name="dp_send_message">Send message</string>
     <string name="dp_imei">IMEI</string>
     <string name="gc_ok">OK</string>
+    <string name="gc_sim_one">Sim 1</string>
+    <string name="gc_sim_two">Sim 2</string>
 </resources>

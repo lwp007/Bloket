@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/dialogBackground"
+    android:minWidth="@dimen/minDialogWidth"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvSimOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/listSelector"
+        android:drawableStart="@drawable/ic_action_add"
+        android:drawablePadding="@dimen/sizeSixteen"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/rowMinHeight"
+        android:paddingStart="@dimen/sizeSixteen"
+        android:text="@string/gc_sim_one"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/textSizeNormal"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/tvSimTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/listSelector"
+        android:drawableStart="@drawable/ic_action_add"
+        android:drawablePadding="@dimen/sizeSixteen"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/rowMinHeight"
+        android:paddingStart="@dimen/sizeSixteen"
+        android:text="@string/gc_sim_two"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/textSizeNormal"
+        tools:ignore="RtlSymmetry" />
+
+</LinearLayout>
