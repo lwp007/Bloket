@@ -1,6 +1,9 @@
 package com.bloket.android.modules.dialer;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -19,9 +23,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bloket.android.R;
@@ -168,10 +174,22 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 break;
 
             case R.id.dpKeyStar:
-                if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_star));
-                    getFilteredList();
+                if (etPhoneNumber == null) return;
+                String mInput = etPhoneNumber.getText().toString();
+
+                // TODO: Android secret codes, details at https://www.xda-developers.com/codes-hidden-android/
+                /*  Best way to deal with the secret codes is as below, but permission is denied unless this app is set as default dialer app.
+                    String mCode = new StringBuilder(mInput).substring(4, mInput.length()-4);
+                    getActivity().sendBroadcast(new Intent("android.provider.Telephony.SECRET_CODE", Uri.parse("android_secret_code://" + mCode)));
+                    */
+                if (mInput.startsWith("*#*#") && mInput.endsWith("#*#") && mInput.length() > 7) {
+                    Intent mSecretIntent = new Intent(Intent.ACTION_MAIN);
+                    mSecretIntent.setClassName("com.android.settings", "com.android.settings.RadioInfo");
+                    startActivity(mSecretIntent);
+                    return;
                 }
+                etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_star));
+                getFilteredList();
                 break;
 
             case R.id.dpKeyZero:
@@ -182,10 +200,16 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 break;
 
             case R.id.dpKeyPound:
-                if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_pound));
-                    getFilteredList();
+                if (etPhoneNumber == null) return;
+
+                // Handle secret code for IMEI
+                if (etPhoneNumber.getText().toString().equals("*#06")) {
+                    showDeviceId();
+                    etPhoneNumber.setText("");
+                    return;
                 }
+                etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_pound));
+                getFilteredList();
                 break;
 
             case R.id.dpKeyHide:
@@ -276,21 +300,6 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
             return;
         }
 
-        if (mInput.equals("*#06#")) {
-            // Show device id
-            return;
-        }
-
-        if (mInput.startsWith("*#*#") && mInput.endsWith("#*#*")) {
-            // Error - Permission denied
-            /*
-            String mCode = new StringBuilder(mInput).substring(4, mInput.length()-4);
-            getActivity().sendBroadcast(new Intent("android.provider.Telephony.SECRET_CODE", Uri.parse("android_secret_code://" + mCode)));
-            */
-            return;
-        }
-
-        // TO DO: Handle calls using sim slot
         final String permissionToCall = Manifest.permission.CALL_PHONE;
         Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
         phoneCallIntent.setData(Uri.parse("tel:" + Uri.encode(mInput)));
@@ -313,5 +322,34 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_nine), "[" + getResources().getString(R.string.dp_txt_wxyz) + "]");
         Log.d("TAG", "^(.*?)" + mSearchRegex + ".*");
         if (mAdapter != null) mAdapter.getFilter().filter(mSearchRegex + ".*");
+    }
+
+    @SuppressLint("HardwareIds")
+    @SuppressWarnings("ConstantConditions")
+    private void showDeviceId() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+            return;
+        }
+
+        TelephonyManager mTelephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+
+        View mContentView = LayoutInflater.from(getContext()).inflate(R.layout.dg_generic_one, null);
+        final Dialog mDialog = new Dialog(getContext());
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(mContentView);
+        TextView tvTitle = mDialog.findViewById(R.id.tvTitle);
+        tvTitle.setText(getResources().getString(R.string.dp_imei));
+        TextView tvMessage = mDialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(mTelephonyManager.getDeviceId());
+        Button btPositive = mDialog.findViewById(R.id.btPositive);
+        btPositive.setText(getResources().getString(R.string.gc_ok));
+        btPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 }

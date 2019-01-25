@@ -26,4 +26,9 @@
     <string name="dp_txt_plus">+</string>
     <string name="dp_txt_call">CALL</string>
 
+    <string name="dp_new_contact">Create new contact</string>
+    <string name="dp_add_contact">Add to a contact</string>
+    <string name="dp_send_message">Send message</string>
+    <string name="dp_imei">IMEI</string>
+    <string name="gc_ok">OK</string>
 </resources>

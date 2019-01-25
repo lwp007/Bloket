@@ -8,6 +8,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhitePressed">#BFFFFFFF</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="colorSelector">#1A000000</color>
 
     <color name="textColorPrimary">#000000</color>
     <color name="colorDialPad">#FFFFFF</color>

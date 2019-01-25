@@ -10,6 +10,7 @@
     <dimen name="textSizeNormal">14sp</dimen>
     <dimen name="textSizeLarge">20sp</dimen>
 
+    <dimen name="sizeTwo">2dp</dimen>
     <dimen name="sizeFour">4dp</dimen>
     <dimen name="sizeEight">8dp</dimen>
     <dimen name="sizeSixteen">16dp</dimen>
@@ -17,5 +18,6 @@
     <dimen name="rowMinHeight">48dp</dimen>
     <dimen name="headerMinHeight">32dp</dimen>
     <dimen name="imgBorderWidth">1dp</dimen>
+    <dimen name="minDialogWidth">640dp</dimen>
 
 </resources>

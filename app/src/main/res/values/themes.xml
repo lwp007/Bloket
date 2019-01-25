@@ -24,5 +24,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!-- Background -->
+        <item name="dialogBackground">@drawable/bg_dialog_light</item>
+
+
     </style>
 </resources>

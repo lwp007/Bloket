@@ -60,7 +60,8 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                 mContactsHolder.mContactImage.setImageURI(Uri.parse(mDataPair.getPhotoUri()));
             }
         } else {
-            ((HeaderViewHolder) mHolder).mHeaderText.setText(mFilteredList.get(mPosition).getName());
+            if (mPosition >= 0)
+                ((HeaderViewHolder) mHolder).mHeaderText.setText(mFilteredList.get(mPosition).getName());
         }
     }
 
