@@ -38,8 +38,8 @@ import android.widget.Toast;
 
 import com.bloket.android.R;
 import com.bloket.android.modules.contacts.ContactsAdapter;
-import com.bloket.android.modules.contacts.ContactsDataPair;
-import com.bloket.android.utilities.datautil.ContactsListTask;
+import com.bloket.android.utilities.helpers.contacts.ContactsDataPair;
+import com.bloket.android.utilities.helpers.contacts.ContactsListTask;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

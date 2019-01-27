@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bloket.android.R;
+import com.bloket.android.utilities.helpers.contacts.ContactsDataPair;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
 
     @Override
     public int getItemViewType(int mPosition) {
-        return mFilteredList.get(mPosition).getType();
+        return mFilteredList.get(mPosition).getRowType();
     }
 
     @NonNull
@@ -61,7 +62,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
             }
         } else {
             if (mPosition >= 0)
-                ((HeaderViewHolder) mHolder).mHeaderText.setText(mFilteredList.get(mPosition).getName());
+                ((HeaderViewHolder) mHolder).mHeaderText.setText(mFilteredList.get(mPosition).getHeaderName());
         }
     }
 
@@ -82,7 +83,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                     // T9 Contact search
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
                     for (ContactsDataPair mPair : mContactsList) {
-                        if (mPair.getType() != 0) continue;
+                        if (mPair.getRowType() != 0) continue;
 
                         String mNameWords[] = mPair.getName().split(" ");
                         for (String mWords : mNameWords) {
@@ -97,7 +98,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                     // Normal search
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
                     for (ContactsDataPair mPair : mContactsList) {
-                        if (mPair.getType() == 0 && mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()))
+                        if (mPair.getRowType() == 0 && mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()))
                             mList.add(mPair);
                     }
                     mFilteredList = mList;

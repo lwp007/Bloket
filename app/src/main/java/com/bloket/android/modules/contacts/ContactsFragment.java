@@ -19,7 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bloket.android.R;
-import com.bloket.android.utilities.datautil.ContactsListTask;
+import com.bloket.android.utilities.helpers.contacts.ContactsDataPair;
+import com.bloket.android.utilities.helpers.contacts.ContactsListTask;
 
 import java.util.ArrayList;
 
