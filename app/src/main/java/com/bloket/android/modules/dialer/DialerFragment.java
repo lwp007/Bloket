@@ -25,7 +25,6 @@ import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,63 +119,63 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         switch (mView.getId()) {
             case R.id.dpKeyOne:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_one));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_1));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyTwo:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_two));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_2));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyThree:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_three));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_3));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyFour:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_four));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_4));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyFive:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_five));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_5));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeySix:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_six));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_6));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeySeven:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_seven));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_7));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyEight:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_eight));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_8));
                     getFilteredList();
                 }
                 break;
 
             case R.id.dpKeyNine:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_nine));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_9));
                     getFilteredList();
                 }
                 break;
@@ -202,7 +201,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
 
             case R.id.dpKeyZero:
                 if (etPhoneNumber != null) {
-                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_zero));
+                    etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_num_0));
                     getFilteredList();
                 }
                 break;
@@ -216,7 +215,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                     etPhoneNumber.setText("");
                     return;
                 }
-                etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_pound));
+                etPhoneNumber.getText().insert(etPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_hash));
                 getFilteredList();
                 break;
 
@@ -325,15 +324,18 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
 
     private void getFilteredList() {
         String mSearchRegex = etPhoneNumber.getText().toString();
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_two), "[" + getResources().getString(R.string.dp_txt_abc) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_three), "[" + getResources().getString(R.string.dp_txt_def) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_four), "[" + getResources().getString(R.string.dp_txt_ghi) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_five), "[" + getResources().getString(R.string.dp_txt_jkl) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_six), "[" + getResources().getString(R.string.dp_txt_mno) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_seven), "[" + getResources().getString(R.string.dp_txt_pqrs) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_eight), "[" + getResources().getString(R.string.dp_txt_tuv) + "]");
-        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_nine), "[" + getResources().getString(R.string.dp_txt_wxyz) + "]");
-        Log.d("TAG", "^(.*?)" + mSearchRegex + ".*");
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_0), getResources().getString(R.string.dp_reg_0));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_1), getResources().getString(R.string.dp_reg_1));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_2), getResources().getString(R.string.dp_reg_2));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_3), getResources().getString(R.string.dp_reg_3));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_4), getResources().getString(R.string.dp_reg_4));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_5), getResources().getString(R.string.dp_reg_5));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_6), getResources().getString(R.string.dp_reg_6));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_7), getResources().getString(R.string.dp_reg_7));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_8), getResources().getString(R.string.dp_reg_8));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_9), getResources().getString(R.string.dp_reg_9));
+        mSearchRegex = mSearchRegex.replaceAll("\\*", getResources().getString(R.string.dp_reg_star));
+        mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_txt_hash), getResources().getString(R.string.dp_reg_hash));
         if (mAdapter != null) mAdapter.getFilter().filter(mSearchRegex + ".*");
     }
 
@@ -351,7 +353,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(mContentView);
         TextView tvTitle = mDialog.findViewById(R.id.tvTitle);
-        tvTitle.setText(getResources().getString(R.string.dp_imei));
+        tvTitle.setText(getResources().getString(R.string.dp_device_imei));
         TextView tvMessage = mDialog.findViewById(R.id.tvMessage);
         tvMessage.setText(mTelephonyManager.getDeviceId());
         Button btPositive = mDialog.findViewById(R.id.btPositive);

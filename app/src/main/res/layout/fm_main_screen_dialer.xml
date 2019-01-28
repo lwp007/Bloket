@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_one"
+                    android:text="@string/dp_num_1"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -109,7 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_two"
+                    android:text="@string/dp_num_2"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_abc"
+                    android:text="@string/dp_txt_2"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_three"
+                    android:text="@string/dp_num_3"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -148,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_def"
+                    android:text="@string/dp_txt_3"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -178,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_four"
+                    android:text="@string/dp_num_4"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -187,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_ghi"
+                    android:text="@string/dp_txt_4"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -208,7 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_five"
+                    android:text="@string/dp_num_5"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -217,7 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_jkl"
+                    android:text="@string/dp_txt_5"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -238,7 +238,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_six"
+                    android:text="@string/dp_num_6"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -247,7 +247,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_mno"
+                    android:text="@string/dp_txt_6"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -277,7 +277,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_seven"
+                    android:text="@string/dp_num_7"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -286,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_pqrs"
+                    android:text="@string/dp_txt_7"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -307,7 +307,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_eight"
+                    android:text="@string/dp_num_8"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -316,7 +316,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_tuv"
+                    android:text="@string/dp_txt_8"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -337,7 +337,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_nine"
+                    android:text="@string/dp_num_9"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -346,7 +346,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_txt_wxyz"
+                    android:text="@string/dp_txt_9"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridSecondary" />
 
@@ -390,7 +390,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/dp_num_zero"
+                    android:text="@string/dp_num_0"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/textSizeDialerGridPrimary"
                     android:textStyle="bold" />
@@ -414,7 +414,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="@string/dp_txt_pound"
+                android:text="@string/dp_txt_hash"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textSizeDialerGridPrimary"
                 android:textStyle="bold" />

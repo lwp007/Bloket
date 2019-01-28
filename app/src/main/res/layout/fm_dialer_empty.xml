@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:minHeight="@dimen/rowMinHeight"
         android:paddingStart="@dimen/sizeSixteen"
-        android:text="@string/dp_new_contact"
+        android:text="@string/dp_contact_new"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSizeNormal"
         tools:ignore="RtlSymmetry" />
@@ -28,7 +28,7 @@
         android:gravity="center_vertical"
         android:minHeight="@dimen/rowMinHeight"
         android:paddingStart="@dimen/sizeSixteen"
-        android:text="@string/dp_add_contact"
+        android:text="@string/dp_contact_add"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSizeNormal"
         tools:ignore="RtlSymmetry" />
@@ -42,7 +42,7 @@
         android:gravity="center_vertical"
         android:minHeight="@dimen/rowMinHeight"
         android:paddingStart="@dimen/sizeSixteen"
-        android:text="@string/dp_send_message"
+        android:text="@string/dp_message_send"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSizeNormal"
         tools:ignore="RtlSymmetry" />
