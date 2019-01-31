@@ -93,7 +93,7 @@ public class DialerContactAdapter extends RecyclerView.Adapter<DialerContactAdap
                     // T9 Contact search
                     ArrayList<DialerContactDataPair> mList = new ArrayList<>();
                     for (DialerContactDataPair mPair : mContactsList) {
-                        String mNameWords[] = mPair.getDisplayName().split(" ");
+                        String mNameWords[] = mPair.getSearchText().split(" ");
                         for (String mWords : mNameWords) {
                             if (mWords.toLowerCase().matches(mSearchText.toLowerCase())) {
                                 mList.add(mPair);

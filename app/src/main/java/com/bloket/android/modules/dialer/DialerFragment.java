@@ -265,6 +265,8 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
     private void getFilteredList() {
         String mSearchRegex = mPhoneNumber.getText().toString();
         if (!mSearchRegex.trim().isEmpty()) {
+            mSearchRegex = mSearchRegex.replaceAll("\\+", "");
+            if (mSearchRegex.isEmpty()) return;
             mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_0), getResources().getString(R.string.dp_reg_0));
             mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_1), getResources().getString(R.string.dp_reg_1));
             mSearchRegex = mSearchRegex.replaceAll(getResources().getString(R.string.dp_num_2), getResources().getString(R.string.dp_reg_2));
