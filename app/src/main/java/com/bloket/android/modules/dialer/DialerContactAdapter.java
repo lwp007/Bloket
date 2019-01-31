@@ -27,13 +27,14 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DialerContactAdapter extends RecyclerView.Adapter<DialerContactAdapter.ContactsViewHolder> implements Filterable {
+public class DialerContactAdapter extends RecyclerView.Adapter implements Filterable {
 
     private Context mContext;
     private ArrayList<DialerContactDataPair> mContactsList;
     private ArrayList<DialerContactDataPair> mFilteredList;
     private String mSearchRegex = "";
     private StyleSpan mBoldSpan;
+    private final int FOOTER_VIEW = 1;
 
     DialerContactAdapter(Context mContext, ArrayList<DialerContactDataPair> mContactsList) {
         this.mContext = mContext;
@@ -42,71 +43,90 @@ public class DialerContactAdapter extends RecyclerView.Adapter<DialerContactAdap
         this.mBoldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
     }
 
+    @Override
+    public int getItemViewType(int mPosition) {
+        if (mPosition == mFilteredList.size()) {
+            return FOOTER_VIEW;
+        }
+        return super.getItemViewType(mPosition);
+    }
+
     @SuppressWarnings("NullableProblems")
     @NonNull
     @Override
-    public ContactsViewHolder onCreateViewHolder(ViewGroup mParent, int mViewType) {
-        View mView = LayoutInflater.from(mParent.getContext()).inflate(R.layout.fm_dialer_contact_row, mParent, false);
-        return new ContactsViewHolder(mView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup mParent, int mViewType) {
+        View mView;
+        if (mViewType == FOOTER_VIEW) {
+            mView = LayoutInflater.from(mParent.getContext()).inflate(R.layout.fm_dialer_contact_empty, mParent, false);
+            return new FooterViewHolder(mView);
+        } else {
+            mView = LayoutInflater.from(mParent.getContext()).inflate(R.layout.fm_dialer_contact_row, mParent, false);
+            return new ContactsViewHolder(mView);
+        }
     }
 
     @SuppressLint("InflateParams")
     @Override
-    public void onBindViewHolder(@NonNull ContactsViewHolder mContactsHolder, int mPosition) {
-        DialerContactDataPair mDataPair = mFilteredList.get(mPosition);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mHolder, int mPosition) {
+        if (mHolder instanceof DialerContactAdapter.ContactsViewHolder) {
+            ContactsViewHolder mContactsHolder = ((ContactsViewHolder) mHolder);
+            DialerContactDataPair mDataPair = mFilteredList.get(mPosition);
 
-        // Highlight filtered text
-        String mDisplayName = mDataPair.getDisplayName();
-        String mLowerCaseName = mDisplayName.toLowerCase();
-        int mMatchPosition[] = getHighlightPosition(mLowerCaseName);
-        if (mMatchPosition[0] != -1) {
-            Spannable mSpanString = Spannable.Factory.getInstance().newSpannable(mDisplayName);
-            mSpanString.setSpan(mBoldSpan, mMatchPosition[0], mMatchPosition[1], Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            mContactsHolder.mContactName.setText(mSpanString);
-        } else {
-            mContactsHolder.mContactName.setText(mDisplayName);
-        }
+            // Highlight filtered text
+            String mDisplayName = mDataPair.getDisplayName();
+            String mLowerCaseName = mDisplayName.toLowerCase();
+            int mMatchPosition[] = getHighlightPosition(mLowerCaseName);
+            if (mMatchPosition[0] != -1) {
+                Spannable mSpanString = Spannable.Factory.getInstance().newSpannable(mDisplayName);
+                mSpanString.setSpan(mBoldSpan, mMatchPosition[0], mMatchPosition[1], Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                mContactsHolder.mContactName.setText(mSpanString);
+            } else {
+                mContactsHolder.mContactName.setText(mDisplayName);
+            }
 
-        if (mDataPair.getPhotoUri() == null) {
-            mContactsHolder.mContactFirstLetter.setVisibility(View.VISIBLE);
-            mContactsHolder.mContactFirstLetter.setText(mDataPair.getDisplayName().substring(0, 1));
-            mContactsHolder.mContactImage.setImageResource(R.drawable.ic_contact_default);
-        } else {
-            mContactsHolder.mContactFirstLetter.setVisibility(View.INVISIBLE);
-            mContactsHolder.mContactImage.setImageURI(Uri.parse(mDataPair.getPhotoUri()));
-        }
+            if (mDataPair.getPhotoUri() == null) {
+                mContactsHolder.mContactFirstLetter.setVisibility(View.VISIBLE);
+                mContactsHolder.mContactFirstLetter.setText(mDataPair.getDisplayName().substring(0, 1));
+                mContactsHolder.mContactImage.setImageResource(R.drawable.ic_contact_default);
+            } else {
+                mContactsHolder.mContactFirstLetter.setVisibility(View.INVISIBLE);
+                mContactsHolder.mContactImage.setImageURI(Uri.parse(mDataPair.getPhotoUri()));
+            }
 
-        // Add all phone numbers to row
-        mContactsHolder.mPhoneNumbers.removeAllViews();
-        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for (int mCount = 0; mCount < mDataPair.getPhoneNumbers().size(); mCount++) {
-            if (mInflater != null) {
-                final String mNumber = mDataPair.getPhoneNumbers().get(mCount).getPhoneNumber().replaceAll("[^0-9]", "");
-                View mView = mInflater.inflate(R.layout.fm_dialer_contact_number, null, false);
-                TextView mPhoneNumber = mView.findViewById(R.id.drPhoneNumber);
+            // Add all phone numbers to row
+            mContactsHolder.mPhoneNumbers.removeAllViews();
+            LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            for (int mCount = 0; mCount < mDataPair.getPhoneNumbers().size(); mCount++) {
+                if (mInflater != null) {
+                    final String mNumber = mDataPair.getPhoneNumbers().get(mCount).getPhoneNumber().replaceAll("[^0-9]", "");
+                    View mView = mInflater.inflate(R.layout.fm_dialer_contact_number, null, false);
+                    TextView mPhoneNumber = mView.findViewById(R.id.drPhoneNumber);
 
-                // Highlight filtered text
-                int mMatchPos[] = getHighlightPosition(mNumber);
-                if (mMatchPos[0] != -1) {
-                    Spannable mSpanString = Spannable.Factory.getInstance().newSpannable(mNumber);
-                    mSpanString.setSpan(mBoldSpan, mMatchPos[0], mMatchPos[1], Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                    mPhoneNumber.setText(mSpanString);
-                } else {
-                    mPhoneNumber.setText(mNumber);
+                    // Highlight filtered text
+                    int mMatchPos[] = getHighlightPosition(mNumber);
+                    if (mMatchPos[0] != -1) {
+                        Spannable mSpanString = Spannable.Factory.getInstance().newSpannable(mNumber);
+                        mSpanString.setSpan(mBoldSpan, mMatchPos[0], mMatchPos[1], Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                        mPhoneNumber.setText(mSpanString);
+                    } else {
+                        mPhoneNumber.setText(mNumber);
+                    }
+
+                    TextView mPhoneLabel = mView.findViewById(R.id.drPhoneLabel);
+                    mPhoneLabel.setText(mDataPair.getPhoneNumbers().get(mCount).getPhoneLabel());
+                    RelativeLayout mPhoneContainer = mView.findViewById(R.id.drPhoneContainer);
+                    mPhoneContainer.setOnClickListener(mTelView -> TelephoneHelper.placeCall((HomeScreenActivity) mContext, mNumber));
+                    mContactsHolder.mPhoneNumbers.addView(mView);
                 }
-
-                TextView mPhoneLabel = mView.findViewById(R.id.drPhoneLabel);
-                mPhoneLabel.setText(mDataPair.getPhoneNumbers().get(mCount).getPhoneLabel());
-                RelativeLayout mPhoneContainer = mView.findViewById(R.id.drPhoneContainer);
-                mPhoneContainer.setOnClickListener(mTelView -> TelephoneHelper.placeCall((HomeScreenActivity) mContext, mNumber));
-                mContactsHolder.mPhoneNumbers.addView(mView);
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mFilteredList.size();
+        if (mSearchRegex.length() < 9)
+            return mFilteredList.size();
+        return mFilteredList.size() + 1;
     }
 
     @Override
@@ -179,10 +199,52 @@ public class DialerContactAdapter extends RecyclerView.Adapter<DialerContactAdap
 
         @Override
         public void onClick(View mView) {
-            // TODO : Open custom contact info page
             Intent mIntent = new Intent(Intent.ACTION_VIEW);
             mIntent.setData(Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, mFilteredList.get(getAdapterPosition()).getContactId()));
             mContext.startActivity(mIntent);
+        }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView mNewContact, mAddContact, mSendMessage;
+
+        FooterViewHolder(View mView) {
+            super(mView);
+            mNewContact = mView.findViewById(R.id.drNewContact);
+            mAddContact = mView.findViewById(R.id.drAddContact);
+            mSendMessage = mView.findViewById(R.id.drSendMessage);
+
+            // Set click listeners
+            mNewContact.setOnClickListener(this);
+            mAddContact.setOnClickListener(this);
+            mSendMessage.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View mView) {
+            switch (mView.getId()) {
+                case R.id.drNewContact:
+                    Intent mNewIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                    mNewIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                    mContext.startActivity(mNewIntent);
+                    break;
+
+                case R.id.drAddContact:
+                    // TODO: Show contact picker
+                    break;
+
+                case R.id.drSendMessage:
+                    Intent mMsgIntent = new Intent(Intent.ACTION_VIEW);
+                    mMsgIntent.setData(Uri.parse("sms:"));
+                    mContext.startActivity(mMsgIntent);
+                    break;
+
+                default:
+                    Intent mIntent = new Intent(Intent.ACTION_VIEW);
+                    mIntent.setData(Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, mFilteredList.get(getAdapterPosition()).getContactId()));
+                    mContext.startActivity(mIntent);
+                    break;
+            }
         }
     }
 }

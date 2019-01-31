@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/dpKeyCall"
+        android:id="@+id/drKeyCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -42,7 +42,7 @@
                 app:cardElevation="@dimen/sizeSixteen">
 
                 <EditText
-                    android:id="@+id/etPhoneNumber"
+                    android:id="@+id/drPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -65,7 +65,7 @@
             android:weightSum="3">
 
             <LinearLayout
-                android:id="@+id/dpKeyOne"
+                android:id="@+id/drKeyOne"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -95,7 +95,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeyTwo"
+                android:id="@+id/drKeyTwo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -125,7 +125,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeyThree"
+                android:id="@+id/drKeyThree"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -164,7 +164,7 @@
             android:weightSum="3">
 
             <LinearLayout
-                android:id="@+id/dpKeyFour"
+                android:id="@+id/drKeyFour"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -194,7 +194,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeyFive"
+                android:id="@+id/drKeyFive"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -224,7 +224,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeySix"
+                android:id="@+id/drKeySix"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -263,7 +263,7 @@
             android:weightSum="3">
 
             <LinearLayout
-                android:id="@+id/dpKeySeven"
+                android:id="@+id/drKeySeven"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -293,7 +293,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeyEight"
+                android:id="@+id/drKeyEight"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -323,7 +323,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dpKeyNine"
+                android:id="@+id/drKeyNine"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -362,7 +362,7 @@
             android:weightSum="3">
 
             <TextView
-                android:id="@+id/dpKeyStar"
+                android:id="@+id/drKeyStar"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -376,7 +376,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/dpKeyZero"
+                android:id="@+id/drKeyZero"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -406,7 +406,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/dpKeyPound"
+                android:id="@+id/drKeyPound"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -429,7 +429,7 @@
             android:weightSum="3">
 
             <ImageButton
-                android:id="@+id/dpKeyHide"
+                android:id="@+id/drKeyHide"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"
@@ -446,7 +446,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/dpKeyBack"
+                android:id="@+id/drKeyBack"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dialPadButtonHeight"
                 android:layout_weight="1"

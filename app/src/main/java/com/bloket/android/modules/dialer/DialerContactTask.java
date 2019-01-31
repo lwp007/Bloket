@@ -71,7 +71,7 @@ public class DialerContactTask extends AsyncTask<Void, Void, Void> {
             mCursor.close();
             mProviderClient.release();
         } catch (Exception mException) {
-            Log.d("BLOKET_LOGS", "Error fetching contacts for dialer, Details: " + mException.toString());
+            Log.d("BLOKET_LOGS", "DialerContactTask: Error fetching contacts for dialer, Details: " + mException.toString());
         }
         return null;
     }

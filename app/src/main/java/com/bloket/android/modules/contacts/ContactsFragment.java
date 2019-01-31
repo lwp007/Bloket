@@ -19,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bloket.android.R;
-import com.bloket.android.utilities.helpers.contacts.ContactsDataPair;
-import com.bloket.android.utilities.helpers.contacts.ContactsListTask;
 
 import java.util.ArrayList;
 
@@ -87,6 +85,7 @@ public class ContactsFragment extends Fragment {
             public void onTaskCompletion(ArrayList<ContactsDataPair> mContactList) {
                 mAdapter = new ContactsAdapter(getContext(), mContactList);
                 cfRecyclerView.setAdapter(mAdapter);
+                mSearchView.setQueryHint("Search among your " + mContactList.size() + " contacts");
             }
         });
         mAsyncTask.execute();

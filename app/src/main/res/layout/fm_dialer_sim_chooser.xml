@@ -9,7 +9,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tvSimOne"
+        android:id="@+id/drSimOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/listSelector"
@@ -24,7 +24,7 @@
         tools:ignore="RtlSymmetry" />
 
     <TextView
-        android:id="@+id/tvSimTwo"
+        android:id="@+id/drSimTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/listSelector"

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bloket.android.R;
+import com.bloket.android.utilities.helpers.permission.PermissionHelper;
 import com.bloket.android.utilities.helpers.telephone.TelephoneHelper;
+import com.bloket.android.utilities.helpers.ui.UIHelper;
 
 public class DialerFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
@@ -38,6 +39,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
     private LinearLayout mKeyGrid;
     private DialerContactAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private final int PERM_CALL_PHONE = 0, PERM_READ_PHONE_STATE = 1;
 
     public static DialerFragment newInstance() {
         return new DialerFragment();
@@ -48,10 +50,10 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
     public View onCreateView(@NonNull LayoutInflater mInflater, @Nullable ViewGroup mContainer, @Nullable Bundle mSavedInstance) {
         View mView = mInflater.inflate(R.layout.fm_dialer_layout, mContainer, false);
         mKeyGrid = mView.findViewById(R.id.drKeyGrid);
-        mKeyCall = mView.findViewById(R.id.dpKeyCall);
+        mKeyCall = mView.findViewById(R.id.drKeyCall);
         mKeyCall.setLayoutParams(callButtonParams());
         mKeyCall.setOnClickListener(this);
-        mPhoneNumber = mView.findViewById(R.id.etPhoneNumber);
+        mPhoneNumber = mView.findViewById(R.id.drPhoneNumber);
         setNumberPanel();
 
         // Setup contact list
@@ -69,89 +71,85 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         mAsyncTask.execute();
 
         // Normal click listeners
-        mView.findViewById(R.id.dpKeyOne).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyTwo).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyThree).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyFour).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyFive).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeySix).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeySeven).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyEight).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyNine).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyStar).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyZero).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyPound).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyHide).setOnClickListener(this);
-        mView.findViewById(R.id.dpKeyBack).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyOne).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyTwo).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyThree).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyFour).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyFive).setOnClickListener(this);
+        mView.findViewById(R.id.drKeySix).setOnClickListener(this);
+        mView.findViewById(R.id.drKeySeven).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyEight).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyNine).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyStar).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyZero).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyPound).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyHide).setOnClickListener(this);
+        mView.findViewById(R.id.drKeyBack).setOnClickListener(this);
 
         // Long press click listeners
-        mView.findViewById(R.id.dpKeyZero).setOnLongClickListener(this);
-        mView.findViewById(R.id.dpKeyBack).setOnLongClickListener(this);
+        mView.findViewById(R.id.drKeyZero).setOnLongClickListener(this);
+        mView.findViewById(R.id.drKeyBack).setOnLongClickListener(this);
         return mView;
     }
 
     @Override
     public void onClick(View mView) {
         switch (mView.getId()) {
-            case R.id.dpKeyZero:
+            case R.id.drKeyZero:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_0));
                 break;
 
-            case R.id.dpKeyOne:
+            case R.id.drKeyOne:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_1));
                 break;
 
-            case R.id.dpKeyTwo:
+            case R.id.drKeyTwo:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_2));
                 break;
 
-            case R.id.dpKeyThree:
+            case R.id.drKeyThree:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_3));
                 break;
 
-            case R.id.dpKeyFour:
+            case R.id.drKeyFour:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_4));
                 break;
 
-            case R.id.dpKeyFive:
+            case R.id.drKeyFive:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_5));
                 break;
 
-            case R.id.dpKeySix:
+            case R.id.drKeySix:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_6));
                 break;
 
-            case R.id.dpKeySeven:
+            case R.id.drKeySeven:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_7));
                 break;
 
-            case R.id.dpKeyEight:
+            case R.id.drKeyEight:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_8));
                 break;
 
-            case R.id.dpKeyNine:
+            case R.id.drKeyNine:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_num_9));
                 break;
 
-            case R.id.dpKeyStar:
+            case R.id.drKeyStar:
                 if (mPhoneNumber == null) return;
                 String mInput = mPhoneNumber.getText().toString();
 
-                // TODO: Android secret codes, details at https://www.xda-developers.com/codes-hidden-android/
-                /*  Best way to deal with the secret codes is as below, but permission is denied unless this app is set as default dialer app.
-                    String mCode = new StringBuilder(mInput).substring(4, mInput.length()-4);
-                    getActivity().sendBroadcast(new Intent("android.provider.Telephony.SECRET_CODE", Uri.parse("android_secret_code://" + mCode)));
-                    */
+                // TODO: Android secret codes
                 if (mInput.startsWith("*#*#") && mInput.endsWith("#*#") && mInput.length() > 7) {
                     Intent mSecretIntent = new Intent(Intent.ACTION_MAIN);
                     mSecretIntent.setClassName("com.android.settings", "com.android.settings.RadioInfo");
@@ -161,7 +159,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_star));
                 break;
 
-            case R.id.dpKeyPound:
+            case R.id.drKeyPound:
                 if (mPhoneNumber == null) return;
 
                 // Handle secret code for IMEI
@@ -173,19 +171,19 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_hash));
                 break;
 
-            case R.id.dpKeyHide:
+            case R.id.drKeyHide:
                 hideDialPad();
                 break;
 
-            case R.id.dpKeyCall:
+            case R.id.drKeyCall:
                 if (mKeyCall.getText().toString().equals(getResources().getString(R.string.dp_txt_call))) {
-                    TelephoneHelper.placeCall(getActivity(), mPhoneNumber.getText().toString());
+                    placeVoiceCall();
                 } else {
                     showDialPad();
                 }
                 break;
 
-            case R.id.dpKeyBack:
+            case R.id.drKeyBack:
                 if (mPhoneNumber == null) break;
                 int mCursorPosition = mPhoneNumber.getSelectionStart();
                 if (mCursorPosition < 1) {
@@ -206,12 +204,12 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public boolean onLongClick(View mView) {
         switch (mView.getId()) {
-            case R.id.dpKeyZero:
+            case R.id.drKeyZero:
                 if (mPhoneNumber != null)
                     mPhoneNumber.getText().insert(mPhoneNumber.getSelectionStart(), getString(R.string.dp_txt_plus));
                 break;
 
-            case R.id.dpKeyBack:
+            case R.id.drKeyBack:
                 if (mPhoneNumber != null)
                     mPhoneNumber.setText("");
                 break;
@@ -288,11 +286,20 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         if (mAdapter != null) mAdapter.getFilter().filter(mSearchRegex);
     }
 
+    @SuppressWarnings("ConstantConditions")
+    private void placeVoiceCall() {
+        if (getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERM_CALL_PHONE);
+            return;
+        }
+        TelephoneHelper.placeCall(getActivity(), mPhoneNumber.getText().toString());
+    }
+
     @SuppressLint("HardwareIds, InflateParams")
     @SuppressWarnings("ConstantConditions")
     private void showDeviceId() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+        if (getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, PERM_READ_PHONE_STATE);
             return;
         }
 
@@ -304,11 +311,50 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         TextView tvTitle = mDialog.findViewById(R.id.tvTitle);
         tvTitle.setText(getResources().getString(R.string.dp_device_imei));
         TextView tvMessage = mDialog.findViewById(R.id.tvMessage);
-        tvMessage.setText(mTelephonyManager.getDeviceId());
+        if (TelephoneHelper.isDualSimDevice(getActivity())) {
+            String mText = getResources().getString(R.string.dp_device_imei_1) + " " + mTelephonyManager.getDeviceId(0) + "\n" +
+                    getResources().getString(R.string.dp_device_imei_2) + " " + mTelephonyManager.getDeviceId(1);
+            tvMessage.setText(mText);
+        } else
+            tvMessage.setText(mTelephonyManager.getDeviceId());
         Button btPositive = mDialog.findViewById(R.id.btPositive);
         btPositive.setText(getResources().getString(R.string.gc_ok));
         btPositive.setOnClickListener(mView -> mDialog.dismiss());
         mDialog.show();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public void onRequestPermissionsResult(int mRequestCode, @NonNull String[] mPermissions, @NonNull int[] mResult) {
+        switch (mRequestCode) {
+            case PERM_CALL_PHONE:
+                if (mResult.length > 0 && mResult[0] == PackageManager.PERMISSION_GRANTED)
+                    placeVoiceCall();
+                else {
+                    boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE);
+                    if (!mShowRationale)
+                        PermissionHelper.requestPermissionSnack(getActivity(), getView());
+                    else
+                        UIHelper.showImageSnack(getActivity(), getView(), "Permission denied.");
+                }
+                break;
+
+            case PERM_READ_PHONE_STATE:
+                if (mResult.length > 0 && mResult[0] == PackageManager.PERMISSION_GRANTED)
+                    showDeviceId();
+                else {
+                    boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE);
+                    if (!mShowRationale)
+                        PermissionHelper.requestPermissionSnack(getActivity(), getView());
+                    else
+                        UIHelper.showImageSnack(getActivity(), getView(), "Permission denied.");
+                }
+                break;
+
+            default:
+                break;
+        }
+        super.onRequestPermissionsResult(mRequestCode, mPermissions, mResult);
     }
 
     private ViewGroup.LayoutParams callButtonParams() {

@@ -1,4 +1,4 @@
-package com.bloket.android.utilities.helpers.contacts;
+package com.bloket.android.modules.contacts;
 
 import android.annotation.SuppressLint;
 import android.content.ContentProviderClient;

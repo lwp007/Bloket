@@ -44,6 +44,8 @@
     <string name="dp_contact_add">Add to a contact</string>
     <string name="dp_message_send">Send message</string>
     <string name="dp_device_imei">IMEI</string>
+    <string name="dp_device_imei_1">IMEI 1:</string>
+    <string name="dp_device_imei_2">IMEI 2:</string>
 
     <string name="gc_ok">OK</string>
     <string name="gc_sim_one">Sim 1</string>

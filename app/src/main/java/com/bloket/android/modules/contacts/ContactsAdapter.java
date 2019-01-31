@@ -14,7 +14,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bloket.android.R;
-import com.bloket.android.utilities.helpers.contacts.ContactsDataPair;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
