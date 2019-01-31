@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +24,14 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
     private ArrayList<ContactsDataPair> mContactsList;
     private Context mContext;
     private ArrayList<ContactsDataPair> mFilteredList;
+    private String mSearchText = "";
+    private StyleSpan mBoldSpan;
 
-    public ContactsAdapter(Context mContext, ArrayList<ContactsDataPair> mContactsList) {
+    ContactsAdapter(Context mContext, ArrayList<ContactsDataPair> mContactsList) {
         this.mContext = mContext;
         this.mContactsList = mContactsList;
         this.mFilteredList = mContactsList;
+        this.mBoldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
     }
 
     @Override
@@ -51,7 +56,20 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         if (mHolder instanceof ContactsViewHolder) {
             ContactsViewHolder mContactsHolder = ((ContactsViewHolder) mHolder);
             ContactsDataPair mDataPair = mFilteredList.get(mPosition);
-            mContactsHolder.mContactName.setText(mDataPair.getName());
+
+            // Highlight filtered text
+            String mDisplayName = mDataPair.getName();
+            String mLowerCaseName = mDisplayName.toLowerCase();
+            if (mLowerCaseName.contains(mSearchText)) {
+                int mPosStr = mLowerCaseName.indexOf(mSearchText);
+                int mPosEnd = mPosStr + mSearchText.length();
+                Spannable mSpanString = Spannable.Factory.getInstance().newSpannable(mDisplayName);
+                mSpanString.setSpan(mBoldSpan, mPosStr, mPosEnd, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                mContactsHolder.mContactName.setText(mSpanString);
+            } else {
+                mContactsHolder.mContactName.setText(mDisplayName);
+            }
+
             if (mDataPair.getPhotoUri() == null) {
                 mContactsHolder.mContactFirstLetter.setVisibility(View.VISIBLE);
                 mContactsHolder.mContactFirstLetter.setText(mDataPair.getName().substring(0, 1));
@@ -76,24 +94,9 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence mCharSequence) {
-                String mSearchText = mCharSequence.toString();
+                mSearchText = mCharSequence.toString().toLowerCase();
                 if (mSearchText.isEmpty()) {
                     mFilteredList = mContactsList;
-                } else if (mSearchText.charAt(0) == '[') {
-                    // T9 Contact search
-                    ArrayList<ContactsDataPair> mList = new ArrayList<>();
-                    for (ContactsDataPair mPair : mContactsList) {
-                        if (mPair.getRowType() != 0) continue;
-
-                        String mNameWords[] = mPair.getName().split(" ");
-                        for (String mWords : mNameWords) {
-                            if (mWords.toLowerCase().matches(mSearchText.toLowerCase())) {
-                                mList.add(mPair);
-                                break;
-                            }
-                        }
-                    }
-                    mFilteredList = mList;
                 } else {
                     // Normal search
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
