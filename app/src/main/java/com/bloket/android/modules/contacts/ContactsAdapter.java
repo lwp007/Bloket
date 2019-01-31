@@ -123,9 +123,9 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
 
         ContactsViewHolder(View mView) {
             super(mView);
-            mContactName = mView.findViewById(R.id.cfContactName);
-            mContactFirstLetter = mView.findViewById(R.id.cfContactFirstLetter);
-            mContactImage = mView.findViewById(R.id.cfContactImage);
+            mContactName = mView.findViewById(R.id.drContactName);
+            mContactFirstLetter = mView.findViewById(R.id.drContactFirstLetter);
+            mContactImage = mView.findViewById(R.id.drContactImage);
         }
     }
 

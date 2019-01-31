@@ -11,6 +11,8 @@
     <color name="colorSelector">#1A000000</color>
 
     <color name="textColorPrimary">#000000</color>
+    <color name="textColorSecondary">#BF000000</color>
+    <color name="textColorTertiary">#80000000</color>
     <color name="colorDialPad">#FFFFFF</color>
     <color name="colorImageBorder">#333333</color>
 </resources>

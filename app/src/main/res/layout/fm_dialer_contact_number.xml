@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drPhoneContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/listSelector"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/rowMinHeight">
+
+    <TextView
+        android:id="@+id/drPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/textColorSecondary"
+        android:textSize="@dimen/textSizeNormal" />
+
+    <TextView
+        android:id="@+id/drPhoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/drPhoneNumber"
+        android:gravity="end"
+        android:textColor="@color/textColorTertiary"
+        android:textSize="@dimen/textSizeNormal" />
+</RelativeLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/rowMinHeight"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/drContactImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/empty"
+                app:civ_border_color="@color/colorImageBorder"
+                app:civ_border_width="@dimen/imgBorderWidth" />
+
+            <TextView
+                android:id="@+id/drContactFirstLetter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSizeLarge" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/drContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSizeNormal"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drPhoneNumbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="56dp"
+        tools:ignore="RtlSymmetry" />
+
+</LinearLayout>

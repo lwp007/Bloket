@@ -14,7 +14,7 @@
         android:layout_height="40dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/cfContactImage"
+            android:id="@+id/drContactImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/empty"
@@ -22,7 +22,7 @@
             app:civ_border_width="@dimen/imgBorderWidth" />
 
         <TextView
-            android:id="@+id/cfContactFirstLetter"
+            android:id="@+id/drContactFirstLetter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif-condensed"
@@ -33,7 +33,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/cfContactName"
+        android:id="@+id/drContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"

@@ -9,11 +9,11 @@ public class ContactsTypePair {
         this.mPhoneNumber = mPhoneNumber;
     }
 
-    private String getTypeLabel() {
+    public String getTypeLabel() {
         return mTypeLabel;
     }
 
-    private String getPhoneNumber() {
+    public String getPhoneNumber() {
         return mPhoneNumber;
     }
 }
