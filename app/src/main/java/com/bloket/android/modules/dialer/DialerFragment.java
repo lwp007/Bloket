@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bloket.android.R;
-import com.bloket.android.utilities.helpers.permission.PermissionHelper;
 import com.bloket.android.utilities.helpers.telephone.TelephoneHelper;
 import com.bloket.android.utilities.helpers.ui.UIHelper;
 
@@ -39,7 +38,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
     private LinearLayout mKeyGrid;
     private DialerContactAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private final int PERM_CALL_PHONE = 0, PERM_READ_PHONE_STATE = 1;
+    private final int PERM_CALL_PHONE = 0, PERM_READ_PHONE_STATE = 1, PERM_READ_CONTACTS = 2;
 
     public static DialerFragment newInstance() {
         return new DialerFragment();
@@ -67,8 +66,6 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                     hideDialPad();
             }
         });
-        DialerContactTask mAsyncTask = new DialerContactTask(getContext(), mContactList -> mAdapter = new DialerContactAdapter(getContext(), mContactList));
-        mAsyncTask.execute();
 
         // Normal click listeners
         mView.findViewById(R.id.drKeyOne).setOnClickListener(this);
@@ -89,6 +86,12 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         // Long press click listeners
         mView.findViewById(R.id.drKeyZero).setOnLongClickListener(this);
         mView.findViewById(R.id.drKeyBack).setOnLongClickListener(this);
+
+        if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERM_READ_CONTACTS);
+            return mView;
+        }
+        loadContactList();
         return mView;
     }
 
@@ -220,6 +223,11 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
         return false;
     }
 
+    private void loadContactList() {
+        DialerContactTask mAsyncTask = new DialerContactTask(getContext(), mContactList -> mAdapter = new DialerContactAdapter(getContext(), mContactList));
+        mAsyncTask.execute();
+    }
+
     private void setNumberPanel() {
         if (mPhoneNumber == null) return;
         mPhoneNumber.setShowSoftInputOnFocus(false);
@@ -333,9 +341,9 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 else {
                     boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE);
                     if (!mShowRationale)
-                        PermissionHelper.requestPermissionSnack(getActivity(), getView());
+                        UIHelper.showPermissionSnack(getActivity(), "call phone");
                     else
-                        UIHelper.showImageSnack(getActivity(), getView(), "Permission denied.");
+                        UIHelper.showImageSnack(getActivity(), "Permission denied.");
                 }
                 break;
 
@@ -345,9 +353,21 @@ public class DialerFragment extends Fragment implements View.OnClickListener, Vi
                 else {
                     boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE);
                     if (!mShowRationale)
-                        PermissionHelper.requestPermissionSnack(getActivity(), getView());
+                        UIHelper.showPermissionSnack(getActivity(), "read phone state");
                     else
-                        UIHelper.showImageSnack(getActivity(), getView(), "Permission denied.");
+                        UIHelper.showImageSnack(getActivity(), "Permission denied.");
+                }
+                break;
+
+            case PERM_READ_CONTACTS:
+                if (mResult.length > 0 && mResult[0] == PackageManager.PERMISSION_GRANTED)
+                    loadContactList();
+                else {
+                    boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS);
+                    if (!mShowRationale)
+                        UIHelper.showPermissionSnack(getActivity(), "read contacts");
+                    else
+                        UIHelper.showImageSnack(getActivity(), "Permission denied.");
                 }
                 break;
 

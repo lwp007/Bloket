@@ -8,9 +8,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,39 +17,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bloket.android.R;
-
-import java.util.ArrayList;
+import com.bloket.android.utilities.helpers.ui.UIHelper;
 
 public class ContactsFragment extends Fragment {
 
     private ContactsAdapter mAdapter;
+    private final int PERM_READ_CONTACTS = 0;
+    private RecyclerView mRecyclerView;
+    private SearchView mSearchView;
 
     public static ContactsFragment newInstance() {
         return new ContactsFragment();
     }
 
+    @SuppressWarnings({"deprecation", "ConstantConditions"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater mInflater, @Nullable ViewGroup mContainer, @Nullable Bundle mSavedInstance) {
         View mView = mInflater.inflate(R.layout.fm_main_screen_contacts, mContainer, false);
-
-
-        final String permissionToCall = Manifest.permission.READ_CONTACTS;
-        if (ActivityCompat.checkSelfPermission(getActivity(), permissionToCall) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{permissionToCall}, 1);
-        }
-
-        final SearchView mSearchView = mView.findViewById(R.id.cfSearchView);
-        final View mSearchBackground = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        mSearchView = mView.findViewById(R.id.cfSearchView);
+        View mSearchBackground = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         mSearchBackground.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
         mSearchView.setQueryHint("Search contacts");
-        mSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchView.setIconified(false);
-            }
-        });
-
+        mSearchView.setOnClickListener(mTempView -> mSearchView.setIconified(false));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String mSearchText) {
@@ -67,28 +55,50 @@ public class ContactsFragment extends Fragment {
 
         FloatingActionButton mFloatingButton = getActivity().findViewById(R.id.mpFabButton);
         mFloatingButton.setImageResource(R.drawable.ic_action_add);
-        mFloatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View mView) {
-                Intent mIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
-                mIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-                startActivityForResult(mIntent, 1);
-            }
+        mFloatingButton.setOnClickListener(mTempView -> {
+            Intent mIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+            mIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+            startActivityForResult(mIntent, 1);
         });
 
-        final RecyclerView cfRecyclerView = mView.findViewById(R.id.cfRecyclerView);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        cfRecyclerView.setLayoutManager(mLayoutManager);
-        cfRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        ContactsListTask mAsyncTask = new ContactsListTask(getContext(), new ContactsListTask.ContactsResponse() {
-            @Override
-            public void onTaskCompletion(ArrayList<ContactsDataPair> mContactList) {
-                mAdapter = new ContactsAdapter(getContext(), mContactList);
-                cfRecyclerView.setAdapter(mAdapter);
-                mSearchView.setQueryHint("Search among your " + mContactList.size() + " contacts");
-            }
+        mRecyclerView = mView.findViewById(R.id.cfRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERM_READ_CONTACTS);
+            return mView;
+        }
+        loadContactList();
+        return mView;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public void onRequestPermissionsResult(int mRequestCode, @NonNull String[] mPermissions, @NonNull int[] mResult) {
+        switch (mRequestCode) {
+            case PERM_READ_CONTACTS:
+                if (mResult.length > 0 && mResult[0] == PackageManager.PERMISSION_GRANTED)
+                    loadContactList();
+                else {
+                    boolean mShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS);
+                    if (!mShowRationale)
+                        UIHelper.showPermissionSnack(getActivity(), "read contacts");
+                    else
+                        UIHelper.showImageSnack(getActivity(), "Permission denied.");
+                }
+                break;
+
+            default:
+                break;
+        }
+        super.onRequestPermissionsResult(mRequestCode, mPermissions, mResult);
+    }
+
+    private void loadContactList() {
+        ContactsListTask mAsyncTask = new ContactsListTask(getContext(), mContactList -> {
+            mAdapter = new ContactsAdapter(getContext(), mContactList);
+            mRecyclerView.setAdapter(mAdapter);
+            mSearchView.setQueryHint("Search among your " + mContactList.size() + " contacts");
         });
         mAsyncTask.execute();
-        return mView;
     }
 }

@@ -167,7 +167,7 @@ public class DialerContactAdapter extends RecyclerView.Adapter implements Filter
     }
 
     private int[] getHighlightPosition(String mText) {
-        Pattern mPattern = Pattern.compile(mSearchRegex.substring(0, mSearchRegex.length() - 2));
+        Pattern mPattern = Pattern.compile("^" + mSearchRegex.substring(0, mSearchRegex.length() - 2));
         String mNameWords[] = mText.split(" ");
         int mWordLength = 0;
         for (String mNameWord : mNameWords) {

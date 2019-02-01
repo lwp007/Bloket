@@ -58,6 +58,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         final ViewPager mViewPager = findViewById(R.id.mpViewPager);
         HomeScreenAdapter mAdapter = new HomeScreenAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int mPosition, float mPosOffset, int mPosOffsetPixels) {

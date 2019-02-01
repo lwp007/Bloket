@@ -1,42 +1,34 @@
 package com.bloket.android.modules.contacts;
 
-import java.util.ArrayList;
+class ContactsDataPair {
 
-public class ContactsDataPair {
-
-    private ArrayList<ContactsTypePair> mPhoneNumbers;
-    private String mContactId, mName, mPhotoUri;
+    private String mContactId, mDisplayName, mPhotoUri;
     private int mRowType;
 
-    ContactsDataPair(String mContactId, String mName, String mPhotoUri, ArrayList<ContactsTypePair> mPhoneNumbers, int mRowType) {
+    ContactsDataPair(String mContactId, String mDisplayName, String mPhotoUri, int mRowType) {
         this.mContactId = mContactId;
-        this.mName = mName;
+        this.mDisplayName = mDisplayName;
         this.mPhotoUri = mPhotoUri;
-        this.mPhoneNumbers = mPhoneNumbers;
         this.mRowType = mRowType;
     }
 
-    public String getContactId() {
+    String getContactId() {
         return mContactId;
     }
 
-    public String getName() {
-        return mName;
+    String getDisplayName() {
+        return mDisplayName;
     }
 
-    public String getHeaderName() {
-        return mName;
+    String getHeaderName() {
+        return mDisplayName;
     }
 
-    public String getPhotoUri() {
+    String getPhotoUri() {
         return mPhotoUri;
     }
 
-    public ArrayList<ContactsTypePair> getPhoneNumbers() {
-        return mPhoneNumbers;
-    }
-
-    public int getRowType() {
+    int getRowType() {
         return mRowType;
     }
 }

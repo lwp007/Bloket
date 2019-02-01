@@ -1,7 +1,9 @@
 package com.bloket.android.modules.contacts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bloket.android.R;
@@ -38,6 +41,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         return mFilteredList.get(mPosition).getRowType();
     }
 
+    @SuppressWarnings("NullableProblems")
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup mParent, int mViewType) {
@@ -50,6 +54,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         }
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder mHolder, int mPosition) {
         if (mHolder instanceof ContactsViewHolder) {
@@ -57,7 +62,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
             ContactsDataPair mDataPair = mFilteredList.get(mPosition);
 
             // Highlight filtered text
-            String mDisplayName = mDataPair.getName();
+            String mDisplayName = mDataPair.getDisplayName();
             String mLowerCaseName = mDisplayName.toLowerCase();
             if (mLowerCaseName.contains(mSearchText)) {
                 int mPosStr = mLowerCaseName.indexOf(mSearchText);
@@ -71,7 +76,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
 
             if (mDataPair.getPhotoUri() == null) {
                 mContactsHolder.mContactFirstLetter.setVisibility(View.VISIBLE);
-                mContactsHolder.mContactFirstLetter.setText(mDataPair.getName().substring(0, 1));
+                mContactsHolder.mContactFirstLetter.setText(mDataPair.getDisplayName().substring(0, 1));
                 mContactsHolder.mContactImage.setImageResource(R.drawable.ic_contact_default);
             } else {
                 mContactsHolder.mContactFirstLetter.setVisibility(View.INVISIBLE);
@@ -100,7 +105,7 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
                     // Normal search
                     ArrayList<ContactsDataPair> mList = new ArrayList<>();
                     for (ContactsDataPair mPair : mContactsList) {
-                        if (mPair.getRowType() == 0 && mPair.getName().toLowerCase().contains(mSearchText.toLowerCase()))
+                        if (mPair.getRowType() == 0 && mPair.getDisplayName().toLowerCase().contains(mSearchText))
                             mList.add(mPair);
                     }
                     mFilteredList = mList;
@@ -119,15 +124,31 @@ public class ContactsAdapter extends RecyclerView.Adapter implements Filterable 
         };
     }
 
-    class ContactsViewHolder extends RecyclerView.ViewHolder {
-        TextView mContactName, mContactFirstLetter;
+    class ContactsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CircularImageView mContactImage;
+        LinearLayout mContactContainer;
+        TextView mContactName, mContactFirstLetter;
 
         ContactsViewHolder(View mView) {
             super(mView);
             mContactName = mView.findViewById(R.id.drContactName);
             mContactFirstLetter = mView.findViewById(R.id.drContactFirstLetter);
             mContactImage = mView.findViewById(R.id.drContactImage);
+            mContactContainer = mView.findViewById(R.id.cnContactContainer);
+
+            // Set click listeners
+            mContactContainer.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View mView) {
+            switch (mView.getId()) {
+                default:
+                    Intent mIntent = new Intent(Intent.ACTION_VIEW);
+                    mIntent.setData(Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, mFilteredList.get(getAdapterPosition()).getContactId()));
+                    mContext.startActivity(mIntent);
+                    break;
+            }
         }
     }
 
